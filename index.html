@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>🌟🌟🌟</title>
+<link rel="icon" type="image/png" href="https://files.catbox.moe/jjjyeh.png">
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6e9d8;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+    position: relative;
+}
+
+/* BÔNG HOA CHÍNH */
+#flower {
+    width: 150px;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.5s ease;
+    z-index: 100;
+}
+#flower:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 15px #ff69b4);
+}
+
+/* CÁNH HOA NỔ TUNG */
+.petal {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    background-image: url('https://png.pngtree.com/png-vector/20240917/ourmid/pngtree-pink-rose-flower-png-image_13618784.png');
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    z-index: 150;
+}
+
+/* PHONG BÌ + LÁ THƯ */
+#envelopeContainer {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 1.5s ease;
+}
+#cornerLogo {
+    position: fixed;
+    bottom: 20px;   /* khoảng cách từ đáy */
+    right: 20px;    /* khoảng cách từ phải */
+    width: 60px;    /* chỉnh size logo */
+    height: auto;   /* giữ tỉ lệ ảnh */
+    z-index: 999;   /* luôn nằm trên các element khác */
+    cursor: pointer; /* nếu muốn click */
+    transition: transform 0.3s ease;
+}
+
+#cornerLogo:hover {
+    transform: scale(1.1); /* hover effect nhẹ */
+}
+.envelope {
+    position: relative;
+    width: 400px;    /* tăng kích thước bấm */
+    height: 250px;   /* tăng chiều cao */
+    background: #d35400;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e67e22;
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    transform-origin: top;
+    transition: 0.9s ease;
+    z-index: 12;
+}
+.letter-small {
+    position: absolute;
+    bottom: -120%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    height: 120%;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    opacity: 0;
+    text-align: center;
+    transition: 1.4s ease;
+}
+.letter-big {
+    position: fixed;
+    bottom: -130%;
+    left: 50%;
+    transform: translateX(-50%) scale(1.15);
+    width: 90%;
+    max-width: 1000px;
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    opacity: 0;
+    transition: bottom 1.6s ease-out, opacity 1.6s ease-out;
+    z-index: 20;
+    border: 4px solid #ff99cc;
+    animation: neonBorder 2s linear infinite;
+    box-shadow: 0 0 10px #ffb3d9, 0 0 20px #ffb3d9, 0 0 30px #ffb3d9, 0 0 40px #ffb3d9;
+}
+/* TIM BAY */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 25px;
+    opacity: 0;
+    animation: floatHeart 4s ease-out forwards;
+}
+
+/* HOA BAY TOÀN MÀN HÌNH */
+.floating-flower {
+    position: fixed;
+    font-size: 20px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@keyframes floatHeart {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-550px) scale(1.6); opacity: 0; }
+}
+
+.open .flap { 
+    transform: rotateX(180deg);
+}
+.open .letter-small {
+    opacity: 1;
+    bottom: 240px;
+    transform: translateX(-50%) scale(1.05);
+}
+@keyframes neonBorder {
+    0% { border-color: #ff99cc; box-shadow: 0 0 10px #ffb3d9,0 0 20px #ffb3d9,0 0 30px #ffb3d9,0 0 40px #ffb3d9; }
+    50% { border-color: #ffcce6; box-shadow: 0 0 15px #ffcce6,0 0 25px #ffcce6,0 0 35px #ffcce6,0 0 50px #ffcce6; }
+    100% { border-color: #ff99cc; box-shadow: 0 0 10px #ffb3d9,0 0 20px #ffb3d9,0 0 30px #ffb3d9,0 0 40px #ffb3d9; }
+}
+</style>
+</head>
+<body>
+<audio id="bgMusic" controls loop style="
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    opacity: 0.5; 
+    width: 300px;
+">
+    <source src="https://files.catbox.moe/x3eran.mp3" type="audio/mpeg">
+  Trình duyệt không hỗ trợ audio
+</audio>
+
+<!-- BÔNG HOA CHÍNH -->
+<img src="https://heraflower.vn/wp-content/uploads/2024/10/mau-hoa-1-10.png" id="flower" alt="flower" onclick="explodeFlower()">
+
+<!-- PHONG BÌ + LÁ THƯ -->
+<div id="envelopeContainer">
+    <div class="envelope" id="env" onclick="openEnvelope()">
+        <div class="flap"></div>
+        <div class="letter-small" id="letterSmall">
+            <h4>🌸 Happy Teacher’s Day 🌸</h4>
+            <p>Chúc thầy cô luôn vui vẻ và ngập tràn hạnh phúc!</p>
+        </div>
+    </div>
+    <div class="letter-big" id="letterBig">
+        <h2>🌸Dear Teacher Sarah🌸</h2>
+        <p>On this Teacher’s Day, I honor your endless patience, the quiet strength guiding me, and the countless hours you spent shaping my mind. Your gentle words teach me to see clearly, and you give not just knowledge but courage, hope, and the wings to dream—lessons that will echo in my heart long after the classroom fades.</p>
+    <div><b>=🌟WillowWilson78🌟=</b></div>
+    <div><b>☆*: .｡. o(≧▽≦)o .｡.:*☆</b></div>
+    </div>
+</div>
+
+<script>
+// ===================================
+// NHẠC NỀN
+// ===================================
+let musicStarted = false;
+document.getElementById("flower").addEventListener("click", () => {
+    const music = document.getElementById("bgMusic");
+    if (!musicStarted) {
+        music.volume = 0.5;
+        music.play().catch(e => console.log("Trình duyệt chặn, cần click user:", e));
+        musicStarted = true;
+    }
+    explodeFlower();
+});
+
+function setVideoSource(videoId, src, fadeDuration = 2000) {
+    const video = document.getElementById(videoId);
+    if (!video) return;
+
+    // Thay nguồn video
+    video.src = src;
+    video.load();
+    video.play().catch(e => console.log("Cần click user để play:", e));
+
+    // Khi video kết thúc → fade out
+    video.addEventListener("ended", () => {
+        let opacity = 1;
+        const interval = 50;
+        const step = interval / fadeDuration;
+
+        const fade = setInterval(() => {
+            opacity -= step;
+            if (opacity <= 0) {
+                opacity = 0;
+                clearInterval(fade);
+                video.style.display = "none";
+
+                // Hiện logo khi fade xong
+                const rightLogo = document.getElementById("rightLogo");
+                const leftLogo = document.getElementById("leftLogo");
+                const rightLabel = document.getElementById("rightLabel");
+
+                if (rightLogo) rightLogo.style.opacity = 1;
+                if (leftLogo) leftLogo.style.opacity = 1;
+                if (rightLabel) rightLabel.style.opacity = 1;
+            }
+            video.style.opacity = opacity;
+        }, interval);
+    });
+}
+
+// Ví dụ sử dụng:
+window.addEventListener("load", () => {
+    setVideoSource("introVideo", "https://files.catbox.moe/7ovqw9.mp4", 2000);
+});
+
+// Gọi hàm khi load
+window.addEventListener("load", () => {
+    startVideoFadeOut("introVideo", 2000); // fade 2 giây
+});
+
+
+// ===================================
+// HIỆU ỨNG BÔNG HOA NỔ
+// ===================================
+function explodeFlower(){
+    const flower = document.getElementById("flower");
+    const rect = flower.getBoundingClientRect();
+    const centerX = rect.left + rect.width/2;
+    const centerY = rect.top + rect.height/2;
+    flower.style.opacity = 0;
+
+    // Hoa bay toàn màn hình
+    startFloatingFlowers();
+
+    // Tạo cánh hoa
+    const petalsCount = 20;
+    for(let i=0;i<petalsCount;i++){
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.style.left = centerX + "px";
+        petal.style.top = centerY + "px";
+        document.body.appendChild(petal);
+
+        const angle = Math.random()*2*Math.PI;
+        const distance = 150 + Math.random()*100;
+        const rotation = Math.random()*360;
+
+        petal.animate([
+            { transform: `translate(0px,0px) rotate(0deg)`, opacity:1 },
+            { transform: `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance + 100}px) rotate(${rotation}deg)`, opacity:0 }
+        ], { duration: 2000 + Math.random()*1000, easing: "ease-out", fill: "forwards" });
+
+        setTimeout(()=>petal.remove(),3000);
+    }
+
+    setTimeout(showEnvelope,2500);
+}
+
+function setBackgroundImage(url) {
+    // Set background image
+    document.body.style.backgroundImage = `url(${url})`;
+    document.body.style.backgroundSize = "cover";      // phóng to vừa khung
+    document.body.style.backgroundPosition = "center"; // căn giữa
+    document.body.style.backgroundRepeat = "no-repeat";// không lặp
+    document.body.style.transition = "background 1s ease"; // chuyển mượt
+
+    // Nếu muốn tự gọi khi load luôn
+    if (document.readyState === "loading") {
+        window.addEventListener("load", () => {
+            document.body.style.backgroundImage = `url(${url})`;
+        });
+    } else {
+        document.body.style.backgroundImage = `url(${url})`;
+    }
+}
+
+setBackgroundImage("https://files.catbox.moe/a68j3j.jpg");
+
+
+// === LOGO GÓC PHẢI ===
+function showRightLogo() {
+    const link = document.createElement("a");
+    link.href = "https://www.facebook.com/WillowWilson78/";
+    link.target = "_blank";
+
+    // ====== Thêm keyframes chỉ glow shadow ======
+    const style = document.createElement("style");
+    style.innerHTML = `
+    @keyframes glowShadowFade {
+        0%   { text-shadow: 0 0 5px #ff99dd; }
+        50%  { text-shadow: 0 0 12px #ff99dd, 0 0 20px #FF4500; }
+        100% { text-shadow: 0 0 5px #ff99dd; }
+    }`;
+    document.head.appendChild(style);
+
+    // ====== Dòng chữ trên logo ======
+    const label = document.createElement("div");
+    label.innerHTML = "🌟FaceBook-Profile🌟";
+    label.style.position = "fixed";
+    label.style.bottom = "200px";      
+    label.style.right = "5px";
+    label.style.fontSize = "22px";
+    label.style.fontWeight = "bold";
+    label.style.color = "#FF4500";        // chữ giữ màu gốc
+    label.style.zIndex = "9999";
+    label.style.pointerEvents = "none"; 
+    label.style.animation = "glowShadowFade 5.5s ease-in-out infinite"; // glow shadow chậm
+
+    // ====== Logo ======
+    const logo = document.createElement("img");
+    logo.src = "https://files.catbox.moe/y5womv.png";
+    logo.alt = "Logo FB";
+
+    logo.style.position = "fixed";
+    logo.style.bottom = "20px";
+    logo.style.right = "20px";
+    logo.style.width = "200px";
+    logo.style.height = "200px";
+    logo.style.zIndex = "9999";
+    logo.style.cursor = "pointer";
+    logo.style.transition = "transform 0.3s";
+
+    logo.onmouseover = () => (logo.style.transform = "scale(1.1)");
+    logo.onmouseout = () => (logo.style.transform = "scale(1)");
+
+    link.appendChild(logo);
+
+    // ====== Thêm vào body ======
+    document.body.appendChild(label);
+    document.body.appendChild(link);
+}
+
+
+
+
+// === LOGO GÓC TRÁI ===
+function showLeftLogo() {
+    const link = document.createElement("a");
+    link.href = "https://github.com/Willowwilson78-hub/carlotta";
+    link.target = "_blank";
+
+    // ====== Label trên logo ======
+    const label = document.createElement("div");
+      label.innerHTML = "🌟Open-Sources🌟";
+    label.style.position = "fixed";
+    label.style.bottom = "100px"; // cách đáy logo khoảng 100px
+    label.style.left = "10px";
+    label.style.fontSize = "22px";
+    label.style.fontWeight = "bold";
+    label.style.color = "#333"; // màu chữ, có thể đổi
+    label.style.zIndex = "9999";
+    label.style.pointerEvents = "none";
+
+    // Glow giống bên phải
+    const style = document.createElement("style");
+    style.innerHTML = `
+    @keyframes glowShadowFadeLeft {
+        0%   { text-shadow: 0 0 5px #99ccff; }
+        50%  { text-shadow: 0 0 12px #99ccff, 0 0 20px #3399ff; }
+        100% { text-shadow: 0 0 5px #99ccff; }
+    }`;
+    document.head.appendChild(style);
+    label.style.animation = "glowShadowFadeLeft 5.5s ease-in-out infinite";
+
+    // ====== Logo ======
+    const logo = document.createElement("img");
+    logo.src = "https://pngimg.com/d/github_PNG65.png";
+    logo.alt = "GitHub Logo";
+
+    logo.style.position = "fixed";
+    logo.style.bottom = "20px";
+    logo.style.left = "10px";
+    logo.style.width = "200px";
+    logo.style.height = "70px";
+    logo.style.zIndex = "9999";
+    logo.style.cursor = "pointer";
+    logo.style.transition = "transform 0.3s";
+
+    logo.onmouseover = () => (logo.style.transform = "scale(1.1)");
+    logo.onmouseout = () => (logo.style.transform = "scale(1)");
+
+    link.appendChild(logo);
+
+    // Thêm vào body
+    document.body.appendChild(label);
+    document.body.appendChild(link);
+}
+
+
+// === GỌI CẢ HAI ===
+window.addEventListener("load", () => {
+    showRightLogo();
+    showLeftLogo();
+});
+
+
+
+
+// ===================================
+// PHONG BÌ
+// ===================================
+function showEnvelope(){
+    const envelopeContainer = document.getElementById("envelopeContainer");
+    const envelope = document.getElementById("env");
+    envelopeContainer.style.display = "block";
+    setTimeout(()=>{ 
+        envelopeContainer.style.opacity = 1; 
+        envelope.style.opacity = 1; 
+    },50);
+}
+
+let opened=false;
+function openEnvelope() {
+    if(opened) return;
+    opened = true;
+    const env = document.getElementById("env");
+    const small = document.getElementById("letterSmall");
+    const big = document.getElementById("letterBig");
+
+    env.classList.add("open");
+
+    setTimeout(()=>{ small.style.bottom = "900px"; small.style.opacity = 0; },2300);
+    setTimeout(()=>{ big.style.bottom = "18%"; big.style.opacity = 1; },3500);
+
+    for(let i=0;i<12;i++){
+        let heart=document.createElement("div");
+        heart.className="heart";
+        heart.innerHTML="❤️";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.animationDelay=(Math.random()*1.2)+"s";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),4500);
+    }
+}
+
+// ===================================
+// HOA BAY TOÀN MÀN HÌNH
+// ===================================
+function startFloatingFlowers(){
+    setInterval(()=>{
+        const flower = document.createElement("div");
+        flower.className = "floating-flower";
+        flower.innerHTML = "🌸";
+        flower.style.fontSize = (15 + Math.random()*20) + "px";
+        flower.style.left = Math.random() * window.innerWidth + "px";
+        flower.style.top = Math.random() * window.innerHeight + "px";
+        const angle = Math.random()*2*Math.PI;
+        const distance = 100 + Math.random()*300;
+        const distanceX = Math.cos(angle)*distance;
+        const distanceY = Math.sin(angle)*distance;
+        flower.animate([
+            { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+            { transform: `translate(${distanceX}px, ${distanceY}px) rotate(${Math.random()*360}deg)`, opacity: 0 }
+        ], { duration: 3000 + Math.random()*1900, easing: "ease-out", fill: "forwards" });
+        document.body.appendChild(flower);
+        setTimeout(()=>flower.remove(),6000);
+    }, 300);
+}
+    //Copyright, Code By WillowWilson78
+    //VS Code
+</script>
+</body>
+</html>
